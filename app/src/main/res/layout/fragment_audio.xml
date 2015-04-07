@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="br.org.cesar.animationpoc.AudioFragment"
+    android:background="#313131">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/device"
+        android:paddingTop="20dp"
+        android:src="@drawable/device"/>
+
+    <ImageView
+        android:id="@+id/wave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/onda_sonora_01"
+        android:paddingTop="90dp"
+        android:paddingLeft="146dp"
+        />
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        android:fontFamily="sans-serif-light"
+        android:layout_below="@+id/device"
+        android:gravity="center"
+        android:text="Here you can check if everything's fine\nwith the speakers and loudspeakers."/>
+
+    <RelativeLayout
+        android:id="@+id/info_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/info_text"
+        android:paddingTop="20dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/num_tests_panel"
+            android:paddingLeft="50dp"
+            android:gravity="center">
+        <TextView
+            android:id="@+id/label_num_tests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number of Tests"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="14dp"
+            android:textColor="@android:color/white"/>
+        <TextView
+            android:id="@+id/num_tests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="#3EADDC"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/est_time_panel"
+            android:layout_toRightOf="@+id/num_tests_panel"
+            android:paddingLeft="50dp"
+            android:gravity="center">
+        <TextView
+            android:id="@+id/label_est_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estimated Time"
+            android:textSize="14dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@android:color/white"
+            android:layout_toRightOf="@+id/label_num_tests"/>
+        <TextView
+            android:id="@+id/est_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1m 30s"
+            android:textColor="#3EADDC"
+            android:textSize="32dp"
+            android:textStyle="bold"/>
+        </LinearLayout>
+
+        </RelativeLayout>
+
+    <Button
+        android:id="@+id/change_frag_button"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:layout_alignParentBottom="true"
+        android:background="#3EADDC"
+        android:text="START TESTS"
+        android:padding="10dp"
+        android:drawableTop="@drawable/audio_icon"
+        android:textColor="@android:color/white"/>
+
+</RelativeLayout>
