@@ -4,12 +4,8 @@ package br.org.cesar.animationpoc;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
-import android.app.ActionBar;
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +52,7 @@ public class AudioFragment extends CustomFragment {
         });
         return rootView;
     }
+
     @Override
     public Animator onCreateAnimator(int transit, final boolean enter, int nextAnim) {
         final int animatorId = (enter) ? R.animator.curtain_up : R.animator.curtain_down;

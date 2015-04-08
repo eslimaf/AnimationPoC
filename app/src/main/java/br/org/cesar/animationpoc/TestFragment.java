@@ -2,17 +2,17 @@ package br.org.cesar.animationpoc;
 
 
 import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -78,48 +78,69 @@ public class TestFragment extends CustomFragment {
         mSuccessButton = (Button) rootView.findViewById(R.id.ok);
         mInfoTextView = (TextView) rootView.findViewById(R.id.test_info_text);
         mPlayer = (ImageView) rootView.findViewById(R.id.player);
+        mPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateBottomButtons();
+            }
+        });
 
 
         setupAnimations();
-        screenMount();
         return rootView;
     }
 
-    private void animateWave() {
+    @Override
+    public Animator onCreateAnimator(int transit, final boolean enter, int nextAnim) {
+        final int animatorId = (enter) ? R.animator.curtain_up : R.animator.curtain_down;
+        final Animator anim = AnimatorInflater.loadAnimator(getActivity(), animatorId);
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                screenMountAnim();
+            }
+        });
+
+        return anim;
+    }
+
+    private void setupAnimations(){
+        setupDeviceAnim();
+        setupEarAnim();
+        setupTitleAnim();
+        setupWaveAnim();
+        setupBottomButtonsAnim();
+        setupInfoBarAnim();
+        setupTestInfoTextAnim();
+        setupPlayerAnim();
+    }
+
+    private void screenMountAnim() {
+        mFullAnimationSet = new AnimatorSet();
+        mFullAnimationSet.play(mInfoBarAnimation).after(mTitleAnimation).after(20);
+        mFullAnimationSet.play(mDeviceAnimation).after(mInfoBarAnimation).after(50);
+        mFullAnimationSet.play(mEarAnimation).after(mDeviceAnimation).after(50);
+        mFullAnimationSet.play(mInfoTextAnimation).with(mWaveAnimation).after(mEarAnimation);
+        mFullAnimationSet.play(mPlayerAnimation).after(mInfoTextAnimation).after(50);
+        mFullAnimationSet.start();
+    }
+
+    private void setupWaveAnim() {
         mWaveAnimation = ObjectAnimator.ofFloat(mMask, View.TRANSLATION_X, 280);
         mWaveAnimation.setRepeatCount(ValueAnimator.INFINITE);
         mWaveAnimation.setRepeatMode(ValueAnimator.RESTART);
         mWaveAnimation.setDuration(3000);
     }
 
-    private void setupAnimations(){
-        animateDevice();
-        animateEar();
-        animateTitle();
-        animateWave();
-        animateBottomButtons();
-        animateInfoBar();
-        animateTestInfoText();
-        animatePlayer();
-    }
-
-    private void screenMount() {
-        mFullAnimationSet = new AnimatorSet();
-        mFullAnimationSet.play(mInfoBarAnimation).with(mTitleAnimation);
-        mFullAnimationSet.play(mDeviceAnimation).after(mTitleAnimation).after(50);
-        mFullAnimationSet.play(mEarAnimation).after(mDeviceAnimation).after(50);
-        mFullAnimationSet.play(mInfoTextAnimation).with(mWaveAnimation).after(mEarAnimation);
-        mFullAnimationSet.play(mPlayerAnimation).after(mInfoTextAnimation).after(50);
-        mFullAnimationSet.play(mErrorButtonAnimation).after(mEarAnimation).after(50);
-        mFullAnimationSet.play(mNoiseButtonAnimation).after(mErrorButtonAnimation).after(20);
-        mFullAnimationSet.play(mSuccessButtonAnimation).after(mNoiseButtonAnimation).after(20);
-        mFullAnimationSet.start();
-    }
-
-    private void animateDevice(){
+    private void setupDeviceAnim(){
         mDeviceAnimation = ObjectAnimator.ofFloat(mDevice, View.TRANSLATION_X, 0);
         mDeviceAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        mDeviceAnimation.setDuration(500);
+        mDeviceAnimation.setDuration(300);
         mDeviceAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -129,7 +150,7 @@ public class TestFragment extends CustomFragment {
             @Override
             public void onAnimationEnd(Animator animator) {
                 ObjectAnimator fadeIn = ObjectAnimator.ofFloat(mAudioIcon, View.ALPHA, 1);
-                fadeIn.setDuration(500);
+                fadeIn.setDuration(300);
                 fadeIn.start();
             }
 
@@ -145,10 +166,10 @@ public class TestFragment extends CustomFragment {
         });
     }
 
-    private void animateEar() {
+    private void setupEarAnim() {
         mEarAnimation = ObjectAnimator.ofFloat(mEar, View.TRANSLATION_X, 0);
         mEarAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        mEarAnimation.setDuration(500);
+        mEarAnimation.setDuration(300);
         mEarAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -157,7 +178,7 @@ public class TestFragment extends CustomFragment {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                animateWave();
+                setupWaveAnim();
             }
 
             @Override
@@ -172,43 +193,50 @@ public class TestFragment extends CustomFragment {
         });
     }
 
-    private void animateBottomButtons(){
+    private void setupBottomButtonsAnim(){
 
 //        AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
         BounceInterpolator interpolator = new BounceInterpolator();
         mErrorButtonAnimation = ObjectAnimator.ofFloat(mErrorButton, View.TRANSLATION_Y, 0);
         mErrorButtonAnimation.setInterpolator(interpolator);
-        mErrorButtonAnimation.setDuration(300);
+        mErrorButtonAnimation.setDuration(200);
 
 
         mNoiseButtonAnimation = ObjectAnimator.ofFloat(mNoiseButton, View.TRANSLATION_Y, 0);
         mNoiseButtonAnimation.setInterpolator(interpolator);
-        mNoiseButtonAnimation.setDuration(300);
+        mNoiseButtonAnimation.setDuration(200);
 
 
         mSuccessButtonAnimation = ObjectAnimator.ofFloat(mSuccessButton, View.TRANSLATION_Y, 0);
         mSuccessButtonAnimation.setInterpolator(interpolator);
-        mSuccessButtonAnimation.setDuration(300);
+        mSuccessButtonAnimation.setDuration(200);
     }
 
-    private void animateTitle(){
+    private void setupTitleAnim(){
         mTitleAnimation = ObjectAnimator.ofFloat(mTitle, View.ALPHA, 1);
-        mTitleAnimation.setDuration(500);
+        mTitleAnimation.setDuration(300);
     }
 
-    private void animateTestInfoText(){
+    private void setupTestInfoTextAnim(){
         mInfoTextAnimation = ObjectAnimator.ofFloat(mInfoTextView, View.ALPHA, 1);
-        mInfoTextAnimation.setDuration(500);
+        mInfoTextAnimation.setDuration(300);
     }
 
-    private void animateInfoBar(){
+    private void setupInfoBarAnim(){
         mInfoBarAnimation = ObjectAnimator.ofFloat(mInfoBar, View.ALPHA, 1);
-        mInfoBarAnimation.setDuration(500);
+        mInfoBarAnimation.setDuration(300);
     }
 
-    private void animatePlayer(){
+    private void setupPlayerAnim(){
         mPlayerAnimation = ObjectAnimator.ofFloat(mPlayer, View.ALPHA, 1);
-        mPlayerAnimation.setDuration(500);
+        mPlayerAnimation.setDuration(300);
+    }
+
+    private void animateBottomButtons(){
+        AnimatorSet buttonAnimatorSet = new AnimatorSet();
+        buttonAnimatorSet.play(mNoiseButtonAnimation).after(mErrorButtonAnimation).after(20);
+        buttonAnimatorSet.play(mSuccessButtonAnimation).after(mNoiseButtonAnimation).after(20);
+        buttonAnimatorSet.start();
     }
 
 }
