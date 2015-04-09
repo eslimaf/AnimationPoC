@@ -12,6 +12,7 @@
         android:paddingLeft="146dp"
         />
     <ImageView
+        android:id="@+id/mask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/grafite_wave_mask"
@@ -24,7 +25,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/device"
         android:paddingTop="20dp"
-        android:src="@drawable/device"/>
+        android:src="@drawable/device"
+        android:translationX="-178dp"/>
 
     <TextView
         android:id="@+id/info_text"
@@ -35,6 +37,7 @@
         android:fontFamily="sans-serif-light"
         android:layout_below="@+id/device"
         android:gravity="center"
+        android:alpha="0"
         android:text="Here you can check if everything's fine\nwith the speakers and loudspeakers."/>
 
     <RelativeLayout
@@ -49,6 +52,7 @@
             android:orientation="vertical"
             android:id="@+id/num_tests_panel"
             android:paddingLeft="50dp"
+            android:alpha="0"
             android:gravity="center">
         <TextView
             android:id="@+id/label_num_tests"
@@ -75,6 +79,7 @@
             android:id="@+id/est_time_panel"
             android:layout_toRightOf="@+id/num_tests_panel"
             android:paddingLeft="50dp"
+            android:alpha="0"
             android:gravity="center">
         <TextView
             android:id="@+id/label_est_time"
@@ -106,6 +111,7 @@
         android:text="START TESTS"
         android:padding="10dp"
         android:drawableTop="@drawable/audio_icon"
+        android:translationY="109dp"
         android:textColor="@android:color/white"/>
 
 </RelativeLayout>

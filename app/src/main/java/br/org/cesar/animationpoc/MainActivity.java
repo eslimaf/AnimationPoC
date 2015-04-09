@@ -7,7 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
 
-public class MainActivity extends ActionBarActivity implements FragmentCallback{
+public class MainActivity extends ActionBarActivity implements FragmentCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,27 +22,28 @@ public class MainActivity extends ActionBarActivity implements FragmentCallback{
             AudioFragment audioFragment = AudioFragment.newInstance();
             audioFragment.setCallbackListener(this);
             getFragmentManager().beginTransaction()
-                    .add(R.id.container,audioFragment )
+                    .add(R.id.container, audioFragment)
                     .commit();
         }
     }
 
     @Override
-    public void changeParentActivityBackgroundColor(String colorHex) {
-        getWindow().getDecorView().setBackgroundColor(Color.parseColor(colorHex));
+    public void changeParentActivityBackgroundColor(int colorResId) {
+        getWindow().getDecorView().setBackgroundColor(Color.parseColor(getString(colorResId)));
     }
 
     @Override
     public void replaceFragment(CustomFragment f, int animIn, int animOut) {
-        if(null != f) f.setCallbackListener(this);
+        if (null != f) f.setCallbackListener(this);
         getFragmentManager().beginTransaction()
-                .setCustomAnimations(animIn,animOut)
+                .setCustomAnimations(animIn, animOut)
                 .replace(R.id.container, f)
                 .commit();
     }
 
     @Override
-    public void changeActionBarBackgroundColor(String colorHex) {
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorHex)));
+    public void changeActionBarBackgroundColor(int colorResId) {
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(
+                Color.parseColor(getString(colorResId))));
     }
 }

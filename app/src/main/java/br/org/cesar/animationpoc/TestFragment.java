@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +27,6 @@ public class TestFragment extends CustomFragment {
     private RelativeLayout mInfoBar;
     private TextView mTitle;
     private ImageView mAudioIcon;
-    private AnimatorSet mFullAnimationSet;
     private ObjectAnimator mDeviceAnimation;
     private ObjectAnimator mEarAnimation;
     private ObjectAnimator mWaveAnimation;
@@ -52,8 +50,7 @@ public class TestFragment extends CustomFragment {
      * @return A new instance of fragment TestFragment.
      */
     public static TestFragment newInstance() {
-        TestFragment fragment = new TestFragment();
-        return fragment;
+        return new TestFragment();
     }
 
 
@@ -71,11 +68,17 @@ public class TestFragment extends CustomFragment {
         mEar = (ImageView) rootView.findViewById(R.id.ear);
         mTitle = (TextView) rootView.findViewById(R.id.testTitle);
         mAudioIcon = (ImageView) rootView.findViewById(R.id.audioIcon);
-        mInfoBar = (RelativeLayout)rootView.findViewById(R.id.info_bar);
+        mInfoBar = (RelativeLayout) rootView.findViewById(R.id.info_bar);
 
         mErrorButton = (Button) rootView.findViewById(R.id.error);
         mNoiseButton = (Button) rootView.findViewById(R.id.wrong);
         mSuccessButton = (Button) rootView.findViewById(R.id.ok);
+        mSuccessButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallbackListener.replaceFragment(AudioFragment.newInstance(), R.animator.curtain_down, R.animator.curtain_up);
+            }
+        });
         mInfoTextView = (TextView) rootView.findViewById(R.id.test_info_text);
         mPlayer = (ImageView) rootView.findViewById(R.id.player);
         mPlayer.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +112,7 @@ public class TestFragment extends CustomFragment {
         return anim;
     }
 
-    private void setupAnimations(){
+    private void setupAnimations() {
         setupDeviceAnim();
         setupEarAnim();
         setupTitleAnim();
@@ -121,13 +124,13 @@ public class TestFragment extends CustomFragment {
     }
 
     private void screenMountAnim() {
-        mFullAnimationSet = new AnimatorSet();
-        mFullAnimationSet.play(mInfoBarAnimation).after(mTitleAnimation).after(20);
-        mFullAnimationSet.play(mDeviceAnimation).after(mInfoBarAnimation).after(50);
-        mFullAnimationSet.play(mEarAnimation).after(mDeviceAnimation).after(50);
-        mFullAnimationSet.play(mInfoTextAnimation).with(mWaveAnimation).after(mEarAnimation);
-        mFullAnimationSet.play(mPlayerAnimation).after(mInfoTextAnimation).after(50);
-        mFullAnimationSet.start();
+        AnimatorSet fullAnimationSet = new AnimatorSet();
+        fullAnimationSet.play(mInfoBarAnimation).after(mTitleAnimation).after(20);
+        fullAnimationSet.play(mDeviceAnimation).after(mInfoBarAnimation).after(50);
+        fullAnimationSet.play(mEarAnimation).after(mDeviceAnimation).after(50);
+        fullAnimationSet.play(mInfoTextAnimation).with(mWaveAnimation).after(mEarAnimation);
+        fullAnimationSet.play(mPlayerAnimation).after(mInfoTextAnimation).after(50);
+        fullAnimationSet.start();
     }
 
     private void setupWaveAnim() {
@@ -137,7 +140,7 @@ public class TestFragment extends CustomFragment {
         mWaveAnimation.setDuration(3000);
     }
 
-    private void setupDeviceAnim(){
+    private void setupDeviceAnim() {
         mDeviceAnimation = ObjectAnimator.ofFloat(mDevice, View.TRANSLATION_X, 0);
         mDeviceAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
         mDeviceAnimation.setDuration(300);
@@ -193,7 +196,7 @@ public class TestFragment extends CustomFragment {
         });
     }
 
-    private void setupBottomButtonsAnim(){
+    private void setupBottomButtonsAnim() {
 
 //        AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
         BounceInterpolator interpolator = new BounceInterpolator();
@@ -212,27 +215,27 @@ public class TestFragment extends CustomFragment {
         mSuccessButtonAnimation.setDuration(200);
     }
 
-    private void setupTitleAnim(){
+    private void setupTitleAnim() {
         mTitleAnimation = ObjectAnimator.ofFloat(mTitle, View.ALPHA, 1);
         mTitleAnimation.setDuration(300);
     }
 
-    private void setupTestInfoTextAnim(){
+    private void setupTestInfoTextAnim() {
         mInfoTextAnimation = ObjectAnimator.ofFloat(mInfoTextView, View.ALPHA, 1);
         mInfoTextAnimation.setDuration(300);
     }
 
-    private void setupInfoBarAnim(){
+    private void setupInfoBarAnim() {
         mInfoBarAnimation = ObjectAnimator.ofFloat(mInfoBar, View.ALPHA, 1);
         mInfoBarAnimation.setDuration(300);
     }
 
-    private void setupPlayerAnim(){
+    private void setupPlayerAnim() {
         mPlayerAnimation = ObjectAnimator.ofFloat(mPlayer, View.ALPHA, 1);
         mPlayerAnimation.setDuration(300);
     }
 
-    private void animateBottomButtons(){
+    private void animateBottomButtons() {
         AnimatorSet buttonAnimatorSet = new AnimatorSet();
         buttonAnimatorSet.play(mNoiseButtonAnimation).after(mErrorButtonAnimation).after(20);
         buttonAnimatorSet.play(mSuccessButtonAnimation).after(mNoiseButtonAnimation).after(20);
