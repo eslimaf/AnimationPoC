@@ -8,6 +8,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,14 +34,12 @@ public class TestFragment extends CustomFragment {
     private ObjectAnimator mTitleAnimation;
     private ObjectAnimator mInfoBarAnimation;
     private ObjectAnimator mErrorButtonAnimation;
-    private ObjectAnimator mNoiseButtonAnimation;
     private ObjectAnimator mSuccessButtonAnimation;
     private TextView mInfoTextView;
     private ObjectAnimator mInfoTextAnimation;
     private ImageView mPlayer;
     private ObjectAnimator mPlayerAnimation;
     private Button mErrorButton;
-    private Button mNoiseButton;
     private Button mSuccessButton;
 
     /**
@@ -71,7 +70,12 @@ public class TestFragment extends CustomFragment {
         mInfoBar = (RelativeLayout) rootView.findViewById(R.id.info_bar);
 
         mErrorButton = (Button) rootView.findViewById(R.id.error);
-        mNoiseButton = (Button) rootView.findViewById(R.id.wrong);
+        mErrorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().add(R.id.container, LoudspeakerFragment.newInstance()).commit();
+            }
+        });
         mSuccessButton = (Button) rootView.findViewById(R.id.ok);
         mSuccessButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +114,12 @@ public class TestFragment extends CustomFragment {
         });
 
         return anim;
+    }
+
+    @Override
+    public void onPause() {
+        Log.d("TEST_FRAG", "On Pause called");
+        super.onPause();
     }
 
     private void setupAnimations() {
@@ -197,18 +207,10 @@ public class TestFragment extends CustomFragment {
     }
 
     private void setupBottomButtonsAnim() {
-
-//        AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
         BounceInterpolator interpolator = new BounceInterpolator();
         mErrorButtonAnimation = ObjectAnimator.ofFloat(mErrorButton, View.TRANSLATION_Y, 0);
         mErrorButtonAnimation.setInterpolator(interpolator);
         mErrorButtonAnimation.setDuration(200);
-
-
-        mNoiseButtonAnimation = ObjectAnimator.ofFloat(mNoiseButton, View.TRANSLATION_Y, 0);
-        mNoiseButtonAnimation.setInterpolator(interpolator);
-        mNoiseButtonAnimation.setDuration(200);
-
 
         mSuccessButtonAnimation = ObjectAnimator.ofFloat(mSuccessButton, View.TRANSLATION_Y, 0);
         mSuccessButtonAnimation.setInterpolator(interpolator);
@@ -237,8 +239,7 @@ public class TestFragment extends CustomFragment {
 
     private void animateBottomButtons() {
         AnimatorSet buttonAnimatorSet = new AnimatorSet();
-        buttonAnimatorSet.play(mNoiseButtonAnimation).after(mErrorButtonAnimation).after(20);
-        buttonAnimatorSet.play(mSuccessButtonAnimation).after(mNoiseButtonAnimation).after(20);
+        buttonAnimatorSet.play(mSuccessButtonAnimation).after(mErrorButtonAnimation).after(20);
         buttonAnimatorSet.start();
     }
 

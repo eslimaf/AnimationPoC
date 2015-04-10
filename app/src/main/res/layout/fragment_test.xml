@@ -181,7 +181,8 @@ tools:context="br.org.cesar.animationpoc.TestFragment">
     >
     <Button
         android:id="@+id/error"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
         android:layout_height="60dp"
         android:background="#881C2C"
         android:textColor="#FFF"
@@ -190,23 +191,14 @@ tools:context="br.org.cesar.animationpoc.TestFragment">
         android:translationY="60dp"
         />
     <Button
-        android:id="@+id/wrong"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
-        android:background="#BFA93B"
-        android:textColor="#FFF"
-        android:textSize="10dp"
-        android:text="I HEAR IT\nWITH NOISES"
-        android:translationY="60dp"
-        />
-    <Button
         android:id="@+id/ok"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
         android:layout_height="60dp"
         android:background="#678C25"
         android:textColor="#FFF"
         android:textSize="10dp"
-        android:gravity="center"
+        android:gravity="center|center_vertical"
         android:text="YES, I HEAR IT\n"
         android:translationY="60dp"
         />
